@@ -7,7 +7,6 @@ const connection = db.connection;
 
 connection.connect(function (err) {
     if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
     askManager();
 });
 
@@ -23,7 +22,6 @@ let askManager = () => {
             'Add new product'
         ]
     }).then(function (answers) {
-        // console.log(answers);
         var managerResponse = answers.action;
         switch (answers.action) {
             case "View products for sale":
@@ -74,7 +72,6 @@ let printAll = () => {
 let viewLowInventory = () => {
     connection.query("SELECT * FROM products WHERE stock_quantity <= 5",
         function (err, res) {
-            // console.log(res);
             if (res.length === 0) {
                 console.log("All items stocked.");
             } else if (res.length > 0) {
@@ -109,7 +106,6 @@ let addInventory = () => {
                 },
                 filter: Number
             }]).then(function (answers) {
-                console.log(answers);
                 connection.query("UPDATE products SET stock_quantity = stock_quantity + ? WHERE product_name = ?", [answers.quantity, answers.reorder],
                     function (err, res) {
                         console.log(chalk.green("\n" + answers.reorder, "+" + answers.quantity), chalk.yellow("\nThank you for your order!"));
@@ -149,7 +145,6 @@ let addNewProduct = () => {
         },
         filter: Number
     }]).then(function (answers) {
-        console.log(answers);
         connection.query("INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (?, ?, ?, ?)", [answers.product_name, answers.department_name, answers.price, answers.stock_quantity]);
 
         console.log(chalk.green("Added:", answers.product_name, answers.department_name, answers.price, answers.stock_quantity));

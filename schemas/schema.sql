@@ -42,28 +42,3 @@ VALUES ("Pasta Sauce", "Sauces", "3.99", 10);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Cheesecake", "Dessert", "8.99", 5);
-
--- SELECT * FROM products WHERE item_id = '1' AND stock_quantity >=1
-
-  
---   item_id (unique id for each product)
--- product_name (Name of product)
--- department_name
--- price (cost to customer)
--- stock_quantity (how much of the product is available in stores)
--- SELECT * FROM top5000;
-
--- SELECT 
---     top_albums.artist,
---     top5000.song,
---     top5000.year,
---     top_albums.year,
---     top_albums.album
--- FROM
---     top_albums
---         INNER JOIN
---     top5000 ON top_albums.year = top5000.year
---         AND top_albums.artist = top5000.artist
--- -- WHERE
--- -- 	top_albums.artist = "The Beatles"
--- ORDER BY top_albums.year;
