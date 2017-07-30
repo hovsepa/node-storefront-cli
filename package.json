@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^2.0.1",
     "console.table": "^0.8.0",
-    "easy-table": "^1.1.0"
+    "easy-table": "^1.1.0",
+    "inquirer": "^3.2.1"
   }
 }

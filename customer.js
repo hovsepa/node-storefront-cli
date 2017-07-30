@@ -1,15 +1,16 @@
-var mysql = require('mysql');
-var Table = require('easy-table')
-var inquirer = require('inquirer');
-var db = require('./connection');
-var connection = db.connection;
+const mysql = require('mysql');
+const Table = require('easy-table');
+const inquirer = require('inquirer');
+const chalk = require('chalk');
+const db = require('./connection');
+const connection = db.connection;
 
 connection.connect(function (err) {
     if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
+    printAll();
 });
 
-var printAll = function () {
+let printAll = () => {
     connection.query('SELECT * FROM products order by item_id ASC', function (error, results, fields) {
         if (error) throw error;
         console.log(
@@ -35,7 +36,7 @@ var printAll = function () {
     });
 }
 
-var askCustomer = function () {
+let askCustomer = () => {
     inquirer.prompt([{
         type: 'input',
         name: 'item_number',
@@ -55,34 +56,28 @@ var askCustomer = function () {
         },
         filter: Number
     }, ]).then(function (answers) {
-        console.log(answers);
         updateQuantity(answers);
     });
 }
 
-var updateQuantity = function (answers) {
+let updateQuantity = (answers) => {
     connection.query("SELECT * FROM products WHERE item_id = " + answers.item_number + " AND stock_quantity >=" + answers.quantity,
         function (err, res) {
-            console.log(res);
             var respMessage = "";
             if (res.length === 0) {
                 respMessage = "Insufficient quantity!";
-                // askCustomer();
             } else if (res.length > 0) {
                 console.log("Updating quantities...\n");
                 var query = connection.query(
                     "UPDATE products SET stock_quantity = stock_quantity -" + answers.quantity + " WHERE item_id = " + answers.item_number,
                     function (err, res) {
-                        // console.log(res.affectedRows + " products updated!\n");
                         respMessage = "Thank you for your purchase!"
                     }
                 );
-                // logs the query being run
-                // console.log(query.sql);
             }
-            printAll();
-            console.log(respMessage);
+            setTimeout(function () {
+                printAll()
+            }, 1000);
+            console.log(chalk.yellow(respMessage));
         });
 }
-
-printAll();
